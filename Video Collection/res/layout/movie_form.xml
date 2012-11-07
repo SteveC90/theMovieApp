@@ -1,0 +1,31 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+     <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:shrinkColumns="1"
+        android:stretchColumns="1" >
+
+        <TableRow>
+            <TextView android:text="@string/m_title" />
+            <EditText 
+                android:id="@+id/title" 
+                android:hint="@string/m_title_hint"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="@string/m_genre" />
+            <EditText 
+                android:id="@+id/genre" 
+                android:hint="@string/m_genre_hint"/>
+        </TableRow>
+        
+        <TableRow>
+            <TextView android:text="@string/release" />
+            <EditText android:id="@+id/release"
+                android:hint="@string/release_hint" />
+        </TableRow>
+        
+    </TableLayout>
+</ScrollView>
