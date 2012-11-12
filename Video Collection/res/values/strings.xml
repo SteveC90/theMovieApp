@@ -1,8 +1,14 @@
 <resources>
 	<!-- main -->
-    <string name="app_name">Video Collection</string>
+    <string name="app_name">The Movie App</string>
+    <string name="welcome_msg">Welcome to your Collection</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_video_collection">Video Collection</string>
+    <string name="gallery">Movie Colletion</string>
+    <string name="load_create">Load/Create</string>
+    <string name="extra">Extra</string>
+    <color name="black">#ff000000</color>
+    <color name="white">#ffffffff</color>
 
     <!-- Movie Form -->
     <string name="m_title">Title: </string>
