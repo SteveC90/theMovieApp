@@ -1,18 +1,18 @@
 package csci498P.video.collection;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 public class VideoCollection extends Activity {
 	
+	//We will have to change this block to just a method eventually with case statements I believe.
 	private View.OnClickListener onGallery = new View.OnClickListener() {
 		public void onClick(View v) {
 			//TODO
-			//startActivity(new Intent(VideoCollection.this, Gallery.class));
+			startActivity(new Intent(VideoCollection.this, Gallery.class));
 		}
 	};
 	
