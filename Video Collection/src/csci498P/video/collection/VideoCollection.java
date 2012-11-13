@@ -49,4 +49,5 @@ public class VideoCollection extends Activity {
 //        getMenuInflater().inflate(R.menu.options, menu);
 //        return true;
 //    }
+    
 }
