@@ -11,7 +11,6 @@ public class VideoCollection extends Activity {
 	//We will have to change this block to just a method eventually with case statements I believe.
 	private View.OnClickListener onGallery = new View.OnClickListener() {
 		public void onClick(View v) {
-			//TODO
 			startActivity(new Intent(VideoCollection.this, Gallery.class));
 		}
 	};

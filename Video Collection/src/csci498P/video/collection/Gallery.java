@@ -2,6 +2,7 @@ package csci498P.video.collection;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 public class Gallery extends Activity{
 	
@@ -23,7 +24,8 @@ public class Gallery extends Activity{
 
 		gridview.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
 	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-	            Toast.makeText(Gallery.this, "" + position, Toast.LENGTH_SHORT).show();
+//	            Toast.makeText(Gallery.this, "" + position, Toast.LENGTH_SHORT).show();
+	        	startActivity(new Intent(Gallery.this, MovieForm.class));
 	        }
 	    });
 	}
@@ -47,7 +49,7 @@ public class Gallery extends Activity{
 	        return 0;
 	    }
 
-	    // create a new ImageView for each item referenced by the Adapter
+	    // create a new ImageView for each item referenced by the Adapter 
 	    public View getView(int position, View convertView, ViewGroup parent) {
 	        ImageView imageView;
 	        if (convertView == null) {  // if it's not recycled, initialize some attributes
@@ -63,7 +65,7 @@ public class Gallery extends Activity{
 	        return imageView;
 	    }
 
-	    // references to our images
+	    // references to our images will have to change so that it is referenced to the DB
 	    private Integer[] mThumbIds = {
 	            R.drawable.ball_green, R.drawable.ball_red
 	    };

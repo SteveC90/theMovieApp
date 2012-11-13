@@ -12,7 +12,7 @@
 
     <!-- Movie Form -->
     <string name="m_title">Title: </string>
-    <string name="m_title_hint">Breakfast CLub</string>
+    <string name="m_title_hint">Breakfast Club</string>
     <string name="m_genre">Genre: </string>
     <string name="m_genre_hint">Action</string>
     <string name="release">Release Date: </string>
