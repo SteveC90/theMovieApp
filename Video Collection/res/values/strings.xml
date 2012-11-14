@@ -1,5 +1,5 @@
 <resources>
-	<!-- main -->
+	<!-- Welcome Screen -->
     <string name="app_name">The Movie App</string>
     <string name="welcome_msg">Welcome to your Collection</string>
     <string name="menu_settings">Settings</string>
@@ -17,5 +17,12 @@
     <string name="m_genre_hint">Action</string>
     <string name="release">Release Date: </string>
     <string name="release_hint">2099 </string>
+    
+    <!-- Archive -->
+    <string name="whos"> Mommas </string>
+    <string name="count"> 0 Movies (Start Collecting) </string>
+    <string name="last_updated"> New </string>
+    <string name="favorite"> Favorite Move:  </string>
+    <string name="f_movie"> Fast Times at Ridgmont High </string>
     
 </resources>
