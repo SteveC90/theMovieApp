@@ -18,7 +18,7 @@ public class VideoCollection extends Activity {
 	private View.OnClickListener onLCScreen = new View.OnClickListener() {
 		public void onClick(View v) {
 			//TODO
-			//startActivity(new Intent(VideoCollection.this, LCScreen.class));
+			startActivity(new Intent(VideoCollection.this, LCScreen.class));
 		}
 	};
 	

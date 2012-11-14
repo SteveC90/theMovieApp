@@ -22,6 +22,7 @@
         </activity>
         <activity android:name=".Gallery"/>
         <activity android:name=".MovieForm"/>
+        <activity android:name=".LCScreen"/>
     </application>
 
 </manifest>
