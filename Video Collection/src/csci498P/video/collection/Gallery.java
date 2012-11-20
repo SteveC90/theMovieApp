@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 public class Gallery extends Activity{
 	
+	@Override
 	public void onCreate(Bundle savedInstanceState){
 		//TODO / to-finish really.
 		super.onCreate(savedInstanceState);
