@@ -27,5 +27,11 @@
                 android:hint="@string/release_hint" />
         </TableRow>
         
+        <TableRow>
+            <TextView android:text="@string/barcode" />
+            <EditText android:id="@+id/barcode"
+                android:hint="@string/barcode_hint" />
+        </TableRow>
+        
     </TableLayout>
 </ScrollView>
