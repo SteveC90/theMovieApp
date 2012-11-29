@@ -4,31 +4,22 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
-public class VideoCollection extends Activity {
+public class VideoCollection extends Activity implements OnClickListener{
 	
-	//We will have to change this block to just a method eventually with case statements I believe.
-	private View.OnClickListener onGallery = new View.OnClickListener() {
-		public void onClick(View v) {
+	public void onClick(View v) {
+		if(v.getId() == R.id.gallery) {
 			startActivity(new Intent(VideoCollection.this, Gallery.class));
-		}
-	};
-	
-	private View.OnClickListener onLCScreen = new View.OnClickListener() {
-		public void onClick(View v) {
-			//TODO
+		} else if (v.getId() == R.id.load_create) {
 			startActivity(new Intent(VideoCollection.this, LCScreen.class));
+		} else if (v.getId() == R.id.extra) {
+			Toast.makeText(getApplicationContext(), "Feature will be enabled in " +
+					"a future release", Toast.LENGTH_LONG).show();
 		}
-	};
-	
-	private View.OnClickListener onExtra = new View.OnClickListener() {
-		public void onClick(View v) {
-			//TODO
-			//Extra might be for find movie theatre location
-			//startActivity(new Intent(VideoCollection.this, Extra.class));
-		}
-	};
+	}
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,16 +29,9 @@ public class VideoCollection extends Activity {
         Button gallery = (Button)findViewById(R.id.gallery);
         Button load_create = (Button)findViewById(R.id.load_create);
         Button extra = (Button)findViewById(R.id.extra);
-        gallery.setOnClickListener(onGallery);
-        load_create.setOnClickListener(onLCScreen);
-        extra.setOnClickListener(onExtra);
+        gallery.setOnClickListener(this);
+        load_create.setOnClickListener(this);
+        extra.setOnClickListener(this);
     }
-
-    //Don't know if we want a menu in the main menu screen.
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.options, menu);
-//        return true;
-//    }
     
 }
