@@ -20,7 +20,7 @@ public class MovieHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE movie_collectors (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT," +
 				"created_date INTEGER, updated_date INTEGER, favorite INTEGER);");
 		db.execSQL("CREATE TABLE movies (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-				"title TEXT, release TEXT, genre TEXT, barcode TEXT, " +
+				"title TEXT, release TEXT, genre TEXT, barcode TEXT, img TEXT" +
 				"collection_id INTEGER);");
 	}
 
@@ -30,22 +30,24 @@ public class MovieHelper extends SQLiteOpenHelper {
 	}
 	
 	//TODO implement the methods/change the methods so that they can also change the movie_collectors
-	public void insert(String title, String release, String genre, String barcode) {
+	public void insert(String title, String release, String genre, String barcode, String img) {
 		ContentValues cv=new ContentValues();
 		cv.put("title", title);
 		cv.put("release", release);
 		cv.put("genre", genre);
 		cv.put("barcode", barcode);
+		cv.put("img", img);
 		getWritableDatabase().insert("movies", "title", cv);
 	}
 	
-	public void update(String id, String title, String release, String genre, String barcode) {
+	public void update(int id, String title, String release, String genre, String barcode, String img) {
 		ContentValues cv=new ContentValues();
-		String[] args={id};
+		String[] args={String.valueOf(id)};
 		cv.put("title", title);
 		cv.put("release", release);
 		cv.put("genre", genre);
 		cv.put("barcode", barcode);
+		cv.put("img", img);
 		getWritableDatabase().update("movies", cv, "_ID=?", args);
 	}
 	
@@ -53,6 +55,11 @@ public class MovieHelper extends SQLiteOpenHelper {
 	public Cursor getAll(String orderBy) {
 		return getReadableDatabase().rawQuery("SELECT _id, title, release, genre," +
 				" barcode FROM restaurants ORDER BY " + orderBy, null);
+	}
+	
+	public Cursor getMovieById(int id){
+		String[] args = {String.valueOf(id)};
+		return getReadableDatabase().rawQuery("SELECT * FROM movies WHERE _ID=?", args);
 	}
 
 	public String getTitle(Cursor c) {
