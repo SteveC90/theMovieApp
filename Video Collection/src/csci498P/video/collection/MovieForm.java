@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,7 +18,7 @@ public class MovieForm extends Activity {
 	EditText barcode;
 	
 	MovieHelper helper;
-	int movieID;
+	long movieID;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -29,14 +30,20 @@ public class MovieForm extends Activity {
 		release = (EditText)findViewById(R.id.release);
 		barcode = (EditText)findViewById(R.id.barcode);
 		
-		movieID = getIntent().getIntExtra(VideoCollection.MOVIE_ID, -1);
+		movieID = getIntent().getLongExtra(Gallery.MOVIE_ID, -1);
 	}
 
 	@Override
 	public void onPause() {
-		save();
+
 		helper.close();
 		super.onPause();
+	}
+	
+	@Override
+	public void onBackPressed(){
+		save();
+		super.onBackPressed();
 	}
 	
 	@Override
@@ -45,6 +52,7 @@ public class MovieForm extends Activity {
 		if(movieID != -1) {
 			load();
 		}
+		super.onResume();
 	}
 
 	@Override
@@ -89,7 +97,7 @@ public class MovieForm extends Activity {
 	}
 
 	private void save() {
-		if(movieID != -1){ 
+		if(movieID == -1){ 
 			helper.insert(title.getText().toString(), release.getText().toString(), genre.getText().toString(), barcode.getText().toString(), null);
 		} else {
 			helper.update(movieID, title.getText().toString(), release.getText().toString(), genre.getText().toString(), barcode.getText().toString(), null);
@@ -98,7 +106,8 @@ public class MovieForm extends Activity {
 
 	private void load() {
 		Cursor c = helper.getMovieById(movieID);
-		
+		c.moveToFirst();
+		//Log.w("MovieForm", String.valueOf(c.getColumnCount()));
 		title.setText(helper.getTitle(c));
 		release.setText(helper.getRelease(c));
 		genre.setText(helper.getGenre(c));
@@ -111,6 +120,7 @@ public class MovieForm extends Activity {
 	//this piece of code handles the result of the barcode scanner
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+		Log.w("MovieForm", scanResult.getContents());
 		if (scanResult != null) {
 			barcode.setText(scanResult.getContents());
 		}

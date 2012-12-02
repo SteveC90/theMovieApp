@@ -10,8 +10,6 @@ import android.widget.Toast;
 
 public class VideoCollection extends Activity implements OnClickListener{
 	
-	public static final String MOVIE_ID = "csci498P.video.collection.MOVIE_ID";
-	
 	public void onClick(View v) {
 		if(v.getId() == R.id.gallery) {
 			startActivity(new Intent(VideoCollection.this, Gallery.class));

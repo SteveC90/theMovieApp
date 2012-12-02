@@ -40,7 +40,7 @@ public class MovieHelper extends SQLiteOpenHelper {
 		getWritableDatabase().insert("movies", "title", cv);
 	}
 	
-	public void update(int id, String title, String release, String genre, String barcode, String img) {
+	public void update(long id, String title, String release, String genre, String barcode, String img) {
 		ContentValues cv=new ContentValues();
 		String[] args={String.valueOf(id)};
 		cv.put("title", title);
@@ -54,12 +54,12 @@ public class MovieHelper extends SQLiteOpenHelper {
 	//TODO Implement the get methods for the movie_collection table
 	public Cursor getAll(String orderBy) {
 		return getReadableDatabase().rawQuery("SELECT _id, title, release, genre," +
-				" barcode FROM restaurants ORDER BY " + orderBy, null);
+				" barcode, img FROM movies ORDER BY " + orderBy, null);
 	}
 	
-	public Cursor getMovieById(int id){
+	public Cursor getMovieById(long id){
 		String[] args = {String.valueOf(id)};
-		return getReadableDatabase().rawQuery("SELECT * FROM movies WHERE _ID=?", args);
+		return getReadableDatabase().rawQuery("SELECT _id, title, release, genre, barcode, img FROM movies WHERE _ID=?", args);
 	}
 
 	public String getTitle(Cursor c) {
@@ -76,6 +76,10 @@ public class MovieHelper extends SQLiteOpenHelper {
 
 	public String getBarcode(Cursor c) {
 		return c.getString(4);
+	}
+	
+	public String getImg(Cursor c) {
+		return c.getString(5);
 	}
 	
 }
