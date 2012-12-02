@@ -17,11 +17,11 @@ public class MovieHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL("CREATE TABLE movie_collectors (_id TEXT PRIMARY KEY (person)" +
-				"created_date TEXT, updated_date TEXT, favorite TEXT);");
+		db.execSQL("CREATE TABLE movie_collectors (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT," +
+				"created_date INTEGER, updated_date INTEGER, favorite INTEGER);");
 		db.execSQL("CREATE TABLE movies (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 				"title TEXT, release TEXT, genre TEXT, barcode TEXT, " +
-				"foreign key (movie_person) REFERENCES movie_collectors(person);");
+				"collection_id INTEGER);");
 	}
 
 	@Override
