@@ -26,7 +26,6 @@ public class Gallery extends Activity{
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
-		//TODO / to-finish really.
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gallery);
 		
@@ -39,7 +38,6 @@ public class Gallery extends Activity{
 
 		gridview.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
 	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-//	            Toast.makeText(Gallery.this, "" + position, Toast.LENGTH_SHORT).show();
 	        	Intent i = new Intent(Gallery.this, MovieForm.class);
 	        	i.putExtra(MOVIE_ID, id);
 	        	startActivity(i);
@@ -109,7 +107,7 @@ public class Gallery extends Activity{
 
 	    // references to our images will have to change so that it is referenced to the DB
 	    private Integer[] mThumbIds = {
-	            R.drawable.ball_green, R.drawable.ball_red
+	            R.drawable.default_img
 	    };
 	}
 
