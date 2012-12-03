@@ -123,6 +123,7 @@ public class MovieForm extends Activity {
 					barcode.getText().toString(), 
 					null);
 		}
+		Toast.makeText(MovieForm.this, "Saved" , Toast.LENGTH_LONG).show()
 	}
 
 	private void load() {
