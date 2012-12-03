@@ -16,8 +16,8 @@ public class VideoCollection extends Activity implements OnClickListener{
 		} else if (v.getId() == R.id.load_create) {
 			startActivity(new Intent(VideoCollection.this, LCScreen.class));
 		} else if (v.getId() == R.id.extra) {
-			Toast.makeText(getApplicationContext(), "Feature will be enabled in " +
-					"a future release", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), "Feature will be enabled in a future release", 
+				Toast.LENGTH_LONG).show();
 		}
 	}
 	
