@@ -32,6 +32,20 @@
             <EditText android:id="@+id/barcode"
                 android:hint="@string/barcode_hint" />
         </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/default_img" />
+
+        </TableRow>
         
     </TableLayout>
 </ScrollView>

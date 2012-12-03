@@ -3,12 +3,15 @@ package csci498P.video.collection;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 public class MovieForm extends Activity {
 
@@ -16,9 +19,12 @@ public class MovieForm extends Activity {
 	EditText genre;
 	EditText release;
 	EditText barcode;
+	ImageView image;
 	
 	MovieHelper helper;
 	long movieID;
+	
+	String imgURI = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -29,6 +35,12 @@ public class MovieForm extends Activity {
 		genre = (EditText)findViewById(R.id.genre);
 		release = (EditText)findViewById(R.id.release);
 		barcode = (EditText)findViewById(R.id.barcode);
+		image = (ImageView)findViewById(R.id.imageView1);
+		
+		//Bitmap bmp = BitmapFactory.decodeFile("/storage/emulated/0/DCIM/Camera/IMG_20120809_170510.jpg");
+		//bmp = Bitmap.createScaledBitmap(bmp,(int)(bmp.getWidth()*.25), (int)(bmp.getHeight()*0.25), true);
+		
+		//image.setImageBitmap(bmp);
 		
 		movieID = getIntent().getLongExtra(Gallery.MOVIE_ID, -1);
 	}
@@ -98,9 +110,18 @@ public class MovieForm extends Activity {
 
 	private void save() {
 		if(movieID == -1){ 
-			helper.insert(title.getText().toString(), release.getText().toString(), genre.getText().toString(), barcode.getText().toString(), null);
+			helper.insert(title.getText().toString(), 
+					release.getText().toString(), 
+					genre.getText().toString(), 
+					barcode.getText().toString(),
+					null);
 		} else {
-			helper.update(movieID, title.getText().toString(), release.getText().toString(), genre.getText().toString(), barcode.getText().toString(), null);
+			helper.update(movieID, 
+					title.getText().toString(), 
+					release.getText().toString(), 
+					genre.getText().toString(), 
+					barcode.getText().toString(), 
+					null);
 		}
 	}
 
