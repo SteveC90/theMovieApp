@@ -32,6 +32,7 @@ public class Gallery extends Activity{
 		
 		helper = new MovieHelper(this);
 		c = helper.getAll(null);
+		startManagingCursor(c);
 		
 		GridView gridview = (GridView) findViewById(R.id.gridview);
 		gridview.setAdapter(new MovieAdapter(this, c));
@@ -45,6 +46,13 @@ public class Gallery extends Activity{
 	        }
 	    });
 		
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		helper.close();
+		stopManagingCursor(c);
 	}
 	
 	@Override
@@ -104,4 +112,5 @@ public class Gallery extends Activity{
 	            R.drawable.ball_green, R.drawable.ball_red
 	    };
 	}
+
 }
