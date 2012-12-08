@@ -1,20 +1,36 @@
 package csci498P.video.collection;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MovieForm extends Activity {
 
+	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	private static final int MEDIA_TYPE_IMAGE = 150;
+	private Uri fileUri = null;
+	
 	EditText title;
 	EditText genre;
 	EditText release;
@@ -23,8 +39,6 @@ public class MovieForm extends Activity {
 	
 	MovieHelper helper;
 	long movieID;
-	
-	String imgURI = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,11 +50,6 @@ public class MovieForm extends Activity {
 		release = (EditText)findViewById(R.id.release);
 		barcode = (EditText)findViewById(R.id.barcode);
 		image = (ImageView)findViewById(R.id.imageView1);
-		
-		//Bitmap bmp = BitmapFactory.decodeFile("/storage/emulated/0/DCIM/Camera/IMG_20120809_170510.jpg");
-		//bmp = Bitmap.createScaledBitmap(bmp,(int)(bmp.getWidth()*.25), (int)(bmp.getHeight()*0.25), true);
-		
-		//image.setImageBitmap(bmp);
 		
 		movieID = getIntent().getLongExtra(Gallery.MOVIE_ID, -1);
 	}
@@ -85,6 +94,16 @@ public class MovieForm extends Activity {
 			//opens the barcode scanner app
 			IntentIntegrator integrator = new IntentIntegrator(this);
 			integrator.initiateScan();
+		} else if (item.getItemId() == R.id.take_pic) {
+			Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			
+		    fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
+		    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+	
+		    // start the image capture Intent
+		    startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+		} else if (item.getItemId() == R.id.select_image) {
+			
 		}
 		
 		return super.onOptionsItemSelected(item);
@@ -97,6 +116,9 @@ public class MovieForm extends Activity {
 		state.putString("genre", genre.getText().toString());
 		state.putString("release", release.getText().toString());
 		state.putString("barcode", barcode.getText().toString());
+		if(fileUri != null) {
+			state.putString("image", fileUri.toString());
+		}
 	}
 
 	@Override
@@ -106,24 +128,42 @@ public class MovieForm extends Activity {
 		genre.setText(state.getString("genre"));
 		release.setText(state.getString("release"));
 		barcode.setText(state.getString("barcode"));
+		if(state.getString("image")!=null){
+			fileUri = Uri.parse(state.getString("image"));
+			Bitmap bmp;
+			try {
+				bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), fileUri);
+				bmp = Bitmap.createScaledBitmap(bmp,(int)(bmp.getWidth()*.25), (int)(bmp.getHeight()*0.25), true);
+				image.setImageBitmap(bmp);
+			} catch (FileNotFoundException e) {
+
+			} catch (IOException e) {
+				
+			}
+		}
 	}
 
 	private void save() {
-		if(movieID == -1){ 
+		String fileString = null;
+		if (fileUri!=null) {
+			fileString = fileUri.toString();
+		}
+		
+		if(movieID == -1) { 
 			helper.insert(title.getText().toString(), 
 					release.getText().toString(), 
 					genre.getText().toString(), 
 					barcode.getText().toString(),
-					null);
+					fileString);
 		} else {
 			helper.update(movieID, 
 					title.getText().toString(), 
 					release.getText().toString(), 
 					genre.getText().toString(), 
-					barcode.getText().toString(), 
-					null);
+					barcode.getText().toString(),
+					fileString);
 		}
-		Toast.makeText(MovieForm.this, "Saved" , Toast.LENGTH_LONG).show()
+		Toast.makeText(MovieForm.this, "Saved" , Toast.LENGTH_LONG).show();
 	}
 
 	private void load() {
@@ -134,20 +174,68 @@ public class MovieForm extends Activity {
 		release.setText(helper.getRelease(c));
 		genre.setText(helper.getGenre(c));
 		barcode.setText(helper.getBarcode(c));
-		
+		if(helper.getImg(c)!=null) {
+			fileUri = Uri.parse(helper.getImg(c));
+			try {
+				Bitmap bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), fileUri);
+				//bmp = Util.scaleBitmap(bmp, image.getWidth());
+				bmp = Bitmap.createScaledBitmap(bmp,(int)(bmp.getWidth()*.25), (int)(bmp.getHeight()*0.25), true);
+				image.setImageBitmap(bmp);
+			} catch (Exception e) {
+				
+			}
+		}
 		c.close();
 	}
 	
 	
 	//this piece of code handles the result of the barcode scanner
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-		Log.w("MovieForm", scanResult.getContents());
-		if (scanResult != null) {
-			barcode.setText(scanResult.getContents());
-		}
+		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+			if (resultCode == RESULT_OK) {
+				Toast.makeText(MovieForm.this, fileUri.toString() , Toast.LENGTH_LONG).show();
+				try {
+					Bitmap bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), fileUri);
+					bmp = Bitmap.createScaledBitmap(bmp,(int)(bmp.getWidth()*.25), (int)(bmp.getHeight()*0.25), true);
+					image.setImageBitmap(bmp);
+				} catch (Exception e) {
+				
+				}
+					
+			}
+	    } else {
+			IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+			Log.w("MovieForm", scanResult.getContents());
+			if (scanResult != null) {
+				barcode.setText(scanResult.getContents());
+			}
+	    }
 		// else continue with any other code you need in the method
 		
+	}
+	
+	private static Uri getOutputMediaFileUri(int type){
+	      return Uri.fromFile(getOutputMediaFile(type));
+	}
+	
+	/** Create a File for saving an image or video */
+	private static File getOutputMediaFile(int type){
+	    // To be safe, you should check that the SDCard is mounted
+	    // using Environment.getExternalStorageState() before doing this.
+
+
+	    // Create a media file name
+	    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+	    File mediaFile;
+	    if (type == MEDIA_TYPE_IMAGE){
+	        mediaFile = new File(Environment.getExternalStorageDirectory(),
+	        "IMG_"+ timeStamp + ".jpg");
+	    } else {
+	        return null;
+	    }
+
+	    return mediaFile;
 	}
 
 }

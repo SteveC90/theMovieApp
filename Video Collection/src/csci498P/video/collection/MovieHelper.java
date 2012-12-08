@@ -61,6 +61,11 @@ public class MovieHelper extends SQLiteOpenHelper {
 		String[] args = {String.valueOf(id)};
 		return getReadableDatabase().rawQuery("SELECT _id, title, release, genre, barcode, img FROM movies WHERE _ID=?", args);
 	}
+	
+	public void deleteMovie(long id) {
+		String[] args = {String.valueOf(id)};
+		getWritableDatabase().delete("movies", "_ID=?", args);
+	}
 
 	public String getTitle(Cursor c) {
 		return c.getString(1);

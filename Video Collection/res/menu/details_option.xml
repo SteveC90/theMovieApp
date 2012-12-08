@@ -4,5 +4,15 @@
         android:id="@+id/scan_barcode"
         android:title="Scan Barcode">
     </item>
+    
+    <item 
+        android:id="@+id/take_pic"
+        android:title="Take Picture" >
+    </item>
+    
+    <item
+        android:id="@+id/select_image"
+        android:title="Select Image" >
+    </item>"
 
 </menu>

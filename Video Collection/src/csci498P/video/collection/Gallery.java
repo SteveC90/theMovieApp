@@ -1,11 +1,17 @@
 package csci498P.video.collection;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +28,7 @@ public class Gallery extends Activity{
 	public static final String MOVIE_ID = "csci498P.video.collection.MOVIE_ID";
 	
 	MovieHelper helper = null;
+	MovieAdapter movies = null;
 	Cursor c;
 	
 	@Override
@@ -34,8 +41,9 @@ public class Gallery extends Activity{
 		startManagingCursor(c);
 		
 		GridView gridview = (GridView) findViewById(R.id.gridview);
-		gridview.setAdapter(new MovieAdapter(this, c));
-
+		movies = new MovieAdapter(this, c);
+		gridview.setAdapter(movies);
+		registerForContextMenu(gridview);
 		gridview.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
 	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 	        	Intent i = new Intent(Gallery.this, MovieForm.class);
@@ -69,6 +77,35 @@ public class Gallery extends Activity{
 	    return super.onOptionsItemSelected(item);
 	}
 	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        if (v.getId() == R.id.gridview) {
+        	
+            getMenuInflater().inflate(R.menu.hold_menu, menu);
+        }
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		if(item.getItemId() == R.id.delete) {
+			final AdapterView.AdapterContextMenuInfo info = 
+	                   (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+			final long id = info.id;
+			new AlertDialog.Builder(this)
+				.setTitle("Are you sure you want to delete this movie? You cannot undo this action.")
+				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						helper.deleteMovie(id);
+						c.requery();
+					}
+				})
+				.setNegativeButton("No", null).show();
+		}
+		return super.onContextItemSelected(item);
+	}
+
+	
 	public class MovieAdapter extends CursorAdapter {
 	    //private Context mContext;
 
@@ -85,7 +122,15 @@ public class Gallery extends Activity{
 		   if(uri == null){
 			   img.setImageResource(mThumbIds[0]);
 		   } else {
-			   img.setImageURI(Uri.parse(uri));
+			   Bitmap bmp;
+			try {
+				bmp = MediaStore.Images.Media.getBitmap(Gallery.this.getContentResolver(), Uri.parse(uri));
+				bmp = Bitmap.createScaledBitmap(bmp,(int)(bmp.getWidth()*.15), (int)(bmp.getHeight()*0.15), true);
+				img.setImageBitmap(bmp);
+			} catch (Exception e) {
+				
+			}
+				
 		   }
 	   }
 
@@ -94,7 +139,7 @@ public class Gallery extends Activity{
 	        ImageView imageView;
 	        //if (convertView == null) {  // if it's not recycled, initialize some attributes
             imageView = new ImageView(context);
-            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+            imageView.setLayoutParams(new GridView.LayoutParams(150, 150));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
 	        //} else {
