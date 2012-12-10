@@ -3,7 +3,6 @@ package csci498P.video.collection;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -11,8 +10,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -103,7 +100,8 @@ public class MovieForm extends Activity {
 		    // start the image capture Intent
 		    startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 		} else if (item.getItemId() == R.id.select_image) {
-			
+			Toast.makeText(getApplicationContext(), "Feature will be enabled in a future release", 
+					Toast.LENGTH_LONG).show();
 		}
 		
 		return super.onOptionsItemSelected(item);
@@ -205,13 +203,13 @@ public class MovieForm extends Activity {
 					
 			}
 	    } else {
+	    	//barcode
 			IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 			Log.w("MovieForm", scanResult.getContents());
 			if (scanResult != null) {
 				barcode.setText(scanResult.getContents());
 			}
 	    }
-		// else continue with any other code you need in the method
 		
 	}
 	
@@ -219,12 +217,7 @@ public class MovieForm extends Activity {
 	      return Uri.fromFile(getOutputMediaFile(type));
 	}
 	
-	/** Create a File for saving an image or video */
 	private static File getOutputMediaFile(int type){
-	    // To be safe, you should check that the SDCard is mounted
-	    // using Environment.getExternalStorageState() before doing this.
-
-
 	    // Create a media file name
 	    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 	    File mediaFile;

@@ -17,8 +17,9 @@ public class MovieHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL("CREATE TABLE movie_collectors (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT," +
-				"created_date INTEGER, updated_date INTEGER, favorite INTEGER);");
+		//commented out since this table is not used at the moment
+		//db.execSQL("CREATE TABLE collections (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT," +
+		//		"created_date INTEGER, updated_date INTEGER, favorite INTEGER);");
 		db.execSQL("CREATE TABLE movies (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 				"title TEXT, release TEXT, genre TEXT, barcode TEXT, img TEXT" +
 				"collection_id INTEGER);");
@@ -29,7 +30,7 @@ public class MovieHelper extends SQLiteOpenHelper {
 		// TODO if we get an updated DB
 	}
 	
-	//TODO implement the methods/change the methods so that they can also change the movie_collectors
+	
 	public void insert(String title, String release, String genre, String barcode, String img) {
 		ContentValues cv=new ContentValues();
 		cv.put("title", title);
@@ -51,7 +52,6 @@ public class MovieHelper extends SQLiteOpenHelper {
 		getWritableDatabase().update("movies", cv, "_ID=?", args);
 	}
 	
-	//TODO Implement the get methods for the movie_collection table
 	public Cursor getAll(String orderBy) {
 		return getReadableDatabase().rawQuery("SELECT _id, title, release, genre," +
 				" barcode, img FROM movies ORDER BY " + orderBy, null);

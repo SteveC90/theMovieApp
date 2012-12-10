@@ -10,17 +10,6 @@ import android.widget.Toast;
 
 public class VideoCollection extends Activity implements OnClickListener{
 	
-	public void onClick(View v) {
-		if(v.getId() == R.id.gallery) {
-			startActivity(new Intent(VideoCollection.this, Gallery.class));
-		} else if (v.getId() == R.id.load_create) {
-			startActivity(new Intent(VideoCollection.this, LCScreen.class));
-		} else if (v.getId() == R.id.extra) {
-			Toast.makeText(getApplicationContext(), "Feature will be enabled in a future release", 
-				Toast.LENGTH_LONG).show();
-		}
-	}
-	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,4 +23,18 @@ public class VideoCollection extends Activity implements OnClickListener{
         extra.setOnClickListener(this);
     }
     
+    
+	public void onClick(View v) {
+		if(v.getId() == R.id.gallery) {
+			startActivity(new Intent(VideoCollection.this, Gallery.class));
+		} else if (v.getId() == R.id.load_create) {
+			Toast.makeText(getApplicationContext(), "Feature will be enabled in a future release", 
+					Toast.LENGTH_LONG).show();
+			//startActivity(new Intent(VideoCollection.this, LCScreen.class));
+		} else if (v.getId() == R.id.extra) {
+			Toast.makeText(getApplicationContext(), "Feature will be enabled in a future release", 
+				Toast.LENGTH_LONG).show();
+		}
+	}
+
 }

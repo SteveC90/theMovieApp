@@ -31,6 +31,7 @@ public class Gallery extends Activity{
 	MovieAdapter movies = null;
 	Cursor c;
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -54,6 +55,7 @@ public class Gallery extends Activity{
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
@@ -78,6 +80,7 @@ public class Gallery extends Activity{
 	}
 	
 	@Override
+	//needed for the "Tap and hold" of items in the gallery
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         if (v.getId() == R.id.gridview) {
         	
@@ -95,6 +98,7 @@ public class Gallery extends Activity{
 			new AlertDialog.Builder(this)
 				.setTitle("Are you sure you want to delete this movie? You cannot undo this action.")
 				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					@SuppressWarnings("deprecation")
 					public void onClick(DialogInterface dialog, int which) {
 						helper.deleteMovie(id);
 						c.requery();
@@ -120,7 +124,7 @@ public class Gallery extends Activity{
 		   ImageView img = (ImageView) view;
 		   String uri = helper.getImg(cursor);
 		   if(uri == null){
-			   img.setImageResource(mThumbIds[0]);
+			   img.setImageResource(mThumbIds);
 		   } else {
 			   Bitmap bmp;
 			try {
@@ -137,23 +141,15 @@ public class Gallery extends Activity{
 	    // create a new ImageView for each item referenced by the Adapter 
 	    public View newView(Context context, Cursor cursor, ViewGroup parent) {
 	        ImageView imageView;
-	        //if (convertView == null) {  // if it's not recycled, initialize some attributes
             imageView = new ImageView(context);
             imageView.setLayoutParams(new GridView.LayoutParams(150, 150));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
-	        //} else {
-	            //imageView = (ImageView) convertView;
-	        //}
-	        
-	        //imageView.setImageResource(mThumbIds[position]);
+	     
 	        return imageView;
 	    }
 
-	    // references to our images will have to change so that it is referenced to the DB
-	    private Integer[] mThumbIds = {
-	            R.drawable.default_img
-	    };
+	    private int mThumbIds = R.drawable.default_img;
 	}
 
 }
